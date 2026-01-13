@@ -261,7 +261,7 @@ bool peer_identity(PeerData* v, Packet* packet)
 		Info("%s (id %d) " LOG_YLW "joined.", nickname.value, v->id);
 		Info("	IP: %s", v->ip.value);
 		Info("	UID: %s", udid.value);
-		Info("	Modified: %d", v->mod_tool);
+		Info("	Modified: %s", BoolStringify(v->mod_tool));
 		v->verified = true;
 	}
 
