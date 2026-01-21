@@ -674,12 +674,12 @@ unsigned long server_cmd_parse(String *string)
 
 	for (int i = 0; i < string->len; i++)
 	{
-		if (!found_digit && isspace(string->value[i]))
+		if (!found_digit && isspace((unsigned char)string->value[i])) // sanitize
 			continue;
 		else
 			found_digit = true;
 
-		if (isspace(string->value[i]))
+		if (isspace((unsigned char)string->value[i])) // sanitize
 			break;
 
 		bool invalid = false;
