@@ -175,7 +175,6 @@ bool peer_identity(PeerData *v, Packet *packet)
 	v->should_timeout = true;
 	v->disconnecting = false;
 	v->mod_tool = false;
-	v->is_mobile = false;
 	v->nickname = nickname;
 	v->udid = udid;
 	v->lobby_icon = lobby_icon;
@@ -261,7 +260,6 @@ bool peer_identity(PeerData *v, Packet *packet)
 		Info("	IP: %s", v->ip.value);
 		Info("	UID: %s", udid.value);
 		Info("	Modified: %s", BoolStringify(v->mod_tool));
-		Info("	Mobile: %s", BoolStringify(v->is_mobile));
 		v->verified = true;
 	}
 
