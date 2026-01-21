@@ -175,7 +175,6 @@ bool peer_identity(PeerData *v, Packet *packet)
 	v->should_timeout = true;
 	v->disconnecting = false;
 	v->mod_tool = false;
-	v->is_mobile = false;
 	v->nickname = nickname;
 	v->udid = udid;
 	v->lobby_icon = lobby_icon;
@@ -261,7 +260,6 @@ bool peer_identity(PeerData *v, Packet *packet)
 		Info("	IP: %s", v->ip.value);
 		Info("	UID: %s", udid.value);
 		Info("	Modified: %s", BoolStringify(v->mod_tool));
-		Info("	Mobile: %s", BoolStringify(v->is_mobile));
 		v->verified = true;
 	}
 
@@ -676,12 +674,12 @@ unsigned long server_cmd_parse(String *string)
 
 	for (int i = 0; i < string->len; i++)
 	{
-		if (!found_digit && isspace(string->value[i]))
+		if (!found_digit && isspace((unsigned char)string->value[i])) // sanitize
 			continue;
 		else
 			found_digit = true;
 
-		if (isspace(string->value[i]))
+		if (isspace((unsigned char)string->value[i])) // sanitize
 			break;
 
 		bool invalid = false;
@@ -956,6 +954,17 @@ bool server_broadcast_msg(Server *server, const char *message)
 	Packet pack;
 	PacketCreate(&pack, CLIENT_CHAT_MESSAGE);
 	PacketWrite(&pack, packet_write16, 0);
+	PacketWrite(&pack, packet_writestr, string_lower(__Str(message)));
+
+	server_broadcast(server, &pack, true);
+	return true;
+}
+
+bool server_broadcast_msg(Server* server, uint16_t sender, const char* message)
+{
+	Packet pack;
+	PacketCreate(&pack, CLIENT_CHAT_MESSAGE);
+	PacketWrite(&pack, packet_write16, sender);
 	PacketWrite(&pack, packet_writestr, string_lower(__Str(message)));
 
 	server_broadcast(server, &pack, true);

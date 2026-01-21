@@ -389,7 +389,7 @@ bool lobby_state_handle(PeerData* v, Packet* packet)
 
 			Info("%s " LOG_RST "(id %d): %s", v->nickname.value, v->id, msg.value);
 			if(!ignore)
-				server_broadcast_ex(v->server, packet, true, v->id);
+				server_broadcast_msg_s(v->server, v->id, msg.value); // chat fix
 			
 			break;
 		}
