@@ -50,6 +50,7 @@
 #define Warn(fmt, ...) log_fmt(fmt, WARN_TYPE, __FILENAME__, __LINE__, ##__VA_ARGS__)
 #define Err(fmt, ...)  log_fmt(fmt, ERROR_TYPE, __FILENAME__, __LINE__, ##__VA_ARGS__)
 #define RAssert(x) if (!(x)) { Err("RAssert(" #x ") failed!"); return false; }
+#define BoolStringify(bool) (bool ? "true" : "false")
 
 typedef void (*loghook_t)(const char* type, const char* message);
 

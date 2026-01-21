@@ -173,6 +173,8 @@ bool lobby_state_handle(PeerData* v, Packet* packet)
 			server_send_msg(v->server, v->peer, CLRCODE_GRA "type .help for command list~");
 			server_send_msg(v->server, v->peer, g_config.motd);
 
+			if (v->mod_tool)
+				server_send_msg(v->server, v->peer, CLRCODE_RED "your mod is disallowed on this server" CLRCODE_RST);
 			if (v->op)
 				server_send_msg(v->server, v->peer, CLRCODE_GRN "you're an operator on this server" CLRCODE_RST);
 			break;
@@ -624,8 +626,6 @@ bool lobby_init(Server* server)
 		{
 			if (v->id != server->game.exe)
 				v->exe_chance += 2 + rand() % 5;
-			else
-				v->exe_chance = 1 + rand() % 1;
 
 			Packet pack;
 			PacketCreate(&pack, SERVER_LOBBY_EXE_CHANCE);
