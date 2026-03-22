@@ -3,14 +3,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-const uint32_t authTypeOne = 1 << 9;
-const uint32_t authTypeTwo = 1 << 31;
-const uint32_t authTypeThree = 1 << 26;
-const uint32_t authTypesAll = authTypeOne | authTypeTwo | authTypeThree;
-const uint32_t authTypes[] = { authTypeOne, authTypeTwo, authTypeThree };
-
 bool auth_create_ticket(PeerData* peer, Packet* packet)
 {
+	const uint32_t authTypeOne = 1u << 9;
+	const uint32_t authTypeTwo = 1u << 31;
+	const uint32_t authTypeThree = 1u << 26;
+	const uint32_t authTypesAll = authTypeOne | authTypeTwo | authTypeThree;
+	const uint32_t authTypes[] = { authTypeOne, authTypeTwo, authTypeThree };
+
 	peer->auth.one = (uint8_t) rand();
 	peer->auth.two = (uint8_t) rand() % 31;
 	peer->auth.type = rand() & ~authTypesAll;
